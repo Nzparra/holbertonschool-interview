@@ -8,6 +8,8 @@ int is_palindrome(unsigned long n)
 {
 	unsigned long i = n, j = 0;
 
+    if (n < 10)
+        return (1);
 	while (i != 0)
 	{
 		j = j * 10;
