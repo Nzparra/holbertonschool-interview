@@ -6,27 +6,22 @@
  **/
 int is_palindrome(unsigned long n)
 {
-	unsigned long unit = 1, start, end, temp = n, i = 0;
+	unsigned long temp = n, len = 1, aux;
 
-	if (n < 10)
-		return (1);
-	while (temp > 9)
+	while (temp / 10)
 	{
-		unit = unit * 10;
 		temp /= 10;
-		i++;
+		len *= 10;
 	}
-	temp = 0;
-	while (i > temp)
+	aux = 0;
+	temp = n;
+	while (len / 10)
 	{
-		start = n / unit;
-		end = n % 10;
-		if (start != end)
+		aux = (aux * 10) + (temp % 10);
+		if (aux != (n / len))
 			return (0);
-		i--;
-		temp++;
-		n = (n % unit) / 10;
-		unit /= 10;
+		len /= 10;
+		temp /= 10;
 	}
 	return (1);
 }
