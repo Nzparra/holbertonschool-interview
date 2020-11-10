@@ -4,7 +4,8 @@
  * @prev: prev
  * @actual: actual
  * @value: value
- * Return: value*/
+ * Return: value
+ */
 skiplist_t *search_index(skiplist_t *prev, skiplist_t *actual, int value)
 {
 	while (prev && prev->index <= actual->index)
