@@ -1,5 +1,6 @@
 #include "sort.h"
 /**
+ * Merge
  * @array: first array
  * @copy: copy of array, and second array
  * @posi: initial position
