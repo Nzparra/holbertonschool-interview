@@ -91,3 +91,4 @@ void merge_sort(int *array, size_t size)
 	partition(copy, 0, size, array);
 	free(copy);
 }
+
