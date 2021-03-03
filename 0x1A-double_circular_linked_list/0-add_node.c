@@ -58,7 +58,7 @@ List *add_node_begin(List **list, char *str)
 }
 
 /**
- * add_node_end - adds node 
+ * add_node_end - adds node
  * @list: circular linked list
  * @str: string to insert
  * Return: new node, or NULL on failure
