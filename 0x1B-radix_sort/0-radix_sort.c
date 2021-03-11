@@ -1,68 +1,100 @@
+#include <stdlib.h>
 #include "sort.h"
 /**
- * bigNum - gets the biggest number
- * @array: array to search
- * @size: size of the array
- * Return: biggest num in array
+ * csort2 - auxiliary function of radix sort
+ *
+ * @array: array of data to be sorted
+ * @buff: malloc buffer
+ * @size: size of data
+ * @lsd: Less significant digit
+ *
+ * Return: No Return
  */
-int bigNum(int *array, size_t size)
+void csort2(int *array, int **buff, int size, int lsd)
 {
-	size_t i;
-	int max;
+	int i, j, csize = 10, num;
+	int carr[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	int carr2[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-	max = 0;
 	for (i = 0; i < size; i++)
 	{
-		if (array[i] > max)
-			max = array[i];
+		num = array[i];
+		for (j = 0; j < lsd; j++)
+			if (j > 0)
+				num = num / 10;
+		num = num % 10;
+		buff[num][carr[num]] = array[i];
+		carr[num] += 1;
 	}
-	return (max);
+
+	for (i = 0, j = 0; i < csize; i++)
+	{
+		while (carr[i] > 0)
+		{
+			array[j] = buff[i][carr2[i]];
+			carr2[i] += 1, carr[i] -= 1;
+			j++;
+		}
+	}
+
+	print_array(array, size);
 }
-
 /**
- * SortLogic - Sort the array
- * @array: the array to sort
- * @size: size of the array
- * @exp: digit to count around
+ * csort - auxiliary function of radix sort
+ *
+ * @array: array of data to be sorted
+ * @size: size of data
+ * @lsd: Less significant digit
+ *
+ * Return: No Return
  */
-void SortLogic(int *array, int size, int exp)
+void csort(int *array, int size, int lsd)
 {
-	int *output, i;
-	int auxArray[10] = {0};
+	int carr[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	int i, j, num, csize = 10, **buff;
 
-	output = malloc(sizeof(int) * size);
-	if (!output)
+	for (i = 0; i < size; i++)
+	{
+		num = array[i];
+		for (j = 0; j < lsd; j++)
+			if (j > 0)
+				num = num / 10;
+		num = num % 10;
+		carr[num] += 1;
+	}
+
+	if (carr[0] == size)
 		return;
-	for (i = 0; i < size; i++)
-		auxArray[(array[i] / exp) % 10]++;
-	for (i = 1; i < 10; i++)
-		auxArray[i] += auxArray[i - 1];
-	for (i = size - 1; i >= 0; i--)
-	{
-		output[auxArray[(array[i] / exp) % 10] - 1] = array[i];
-		auxArray[(array[i] / exp) % 10]--;
-	}
-	for (i = 0; i < size; i++)
-		array[i] = output[i];
-	free(output);
-}
 
+	buff = malloc(sizeof(int *) * 10);
+	if (!buff)
+		return;
+
+	for (i = 0; i < csize; i++)
+		if (carr[i] != 0)
+			buff[i] = malloc(sizeof(int) * carr[i]);
+
+	csort2(array, buff, size, lsd);
+
+	csort(array, size, lsd + 1);
+
+	for (i = 0; i < csize; i++)
+		if (carr[i] > 0)
+			free(buff[i]);
+	free(buff);
+}
 /**
- * radix_sort - LDS Method radix sort
- * @array: the array to sort
- * @size: size of the array
+ * radix_sort - sorts an array of integers in ascending order using the Radix
+ * sort algorithm
+ *
+ * @array: array of data to be sorted
+ * @size: size of data
+ *
+ * Return: No Return
  */
 void radix_sort(int *array, size_t size)
 {
-	int maxNum, exp;
-
 	if (size < 2)
 		return;
-
-	maxNum = bigNum(array, size);
-	for (exp = 1; maxNum / exp > 0; exp *= 10)
-	{
-		SortLogic(array, size, exp);
-		print_array(array, size);
-	}
+	csort(array, size, 1);
 }
