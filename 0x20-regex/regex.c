@@ -17,17 +17,17 @@ int regex_match(char const *str, char const *pattern)
 	check_dot = *str && (*str == *pattern || *pattern == '.');
 	check_star = *(pattern + 1) == '*';
 	
-    if (!*str && !check_star)
-		return (*pattern ? 0 : 1);
+	    if (!*str && !check_star)
+			return (*pattern ? 0 : 1);
 	
-    if (check_dot && check_star)
-		return (regex_match(str + 1, pattern) || regex_match(str, pattern + 2));
+	    if (check_dot && check_star)
+			return (regex_match(str + 1, pattern) || regex_match(str, pattern + 2));
 	
-    else if (check_dot && !check_star)
-		return (regex_match(str + 1, pattern + 1));
+	    else if (check_dot && !check_star)
+			return (regex_match(str + 1, pattern + 1));
 	
-    else if (check_star)
-		return (regex_match(str, pattern + 2));
+	    else if (check_star)
+			return (regex_match(str, pattern + 2));
 	
-    return (0);
+	    return (0);
 }
