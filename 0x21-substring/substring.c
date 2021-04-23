@@ -58,3 +58,4 @@ int *find_substring(char const *s, char const **words, int nb_words, int *n)
 	*n = count;
 	return (index_array);
 }
+
